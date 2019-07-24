@@ -1,0 +1,68 @@
+version: '3.7'
+
+networks:
+  test:
+    driver: bridge
+
+services:
+  # Zookeeper
+  zookeeper:
+    container_name: xingular_zookeeper
+    hostname: zookeeper
+    image: zookeeper:3.5.5
+    ports:
+      - "2181:2181"
+    networks:
+      - test
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  # Kafka
+  kafka:
+    container_name: xingular_kafka
+    image: wurstmeister/kafka:2.11-2.0.0
+    hostname: localhost
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    networks:
+      - test
+    environment:
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_DELETE_TOPIC_ENABLE: 'true'
+      KAFKA_LOG_RETENTION_HOURS: -1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: "exit 0"
+
+  # redis
+  redis:
+    container_name: xingular_redis
+    hostname: redis
+    image: redis:5.0-rc-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - test
+    healthcheck:
+      test: "exit 0"
+  
+  # arangodb
+  arangodb:
+    container_name: xingular_arangodb
+    image: arangodb/arangodb:3.3.14
+    hostname: arangodb
+    ports:
+      - "8529:8529"
+    networks:
+      - test
+    environment:
+      ARANGO_NO_AUTH: 1
+    healthcheck:
+      test: "exit 0"

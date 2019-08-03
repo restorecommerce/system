@@ -1,21 +1,28 @@
-# System
+# Docker
 
-## Running
+Resources are collected here related to running an orchestration of the various [restorecommerce](https://github.com/restorecommerce) services and their backing services (dependent services).
 
+## Prerequisites
 
-The System repository contains a minimal docker compose file needed for running the [restorecommerce](https://github.com/restorecommerce) microservices tests.
-This spins up an instance of [Apache Kafka](https://kafka.apache.org/), [Redis](https://redis.io/), [AranagoDB](https://www.arangodb.com/) and [ZooKeeper](https://zookeeper.apache.org/).
+This requires Docker and [`docker`](https://docs.docker.com/) and [`docker-compose`](https://docs.docker.com/compose/) to be installed.
 
-To start the backing services execute below command:
+## Backing Services
 
-```
+The backing services for a Restore Commerce system comprise:
+
+- [Apache Kafka](https://kafka.apache.org/)
+- [Redis](https://redis.io/)
+- [AranagoDB](https://www.arangodb.com/) 
+- [ZooKeeper](https://zookeeper.apache.org/).
+
+These can be started with:
+
+```sh
 docker-compose -f backingservices-docker-compose.yml up
 ```
 
-<small>*Note: this requires you to have [`docker-compose`](https://docs.docker.com/compose/) installed, which comes in a separate package from `docker`*</small>
+...and stopped:
 
-To stop backing services execute below command:
-
-```
+```sh
 docker-compose -f backingservices-docker-compose.yml down
 ```

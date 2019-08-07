@@ -73,8 +73,6 @@ services:
     container_name: minio
     hostname: minio
     image: minio/minio:RELEASE.2019-07-17T22-54-12Z
-    volumes:
-      - ./ostorage:/data
     ports:
       - "9000:9000"
     networks:

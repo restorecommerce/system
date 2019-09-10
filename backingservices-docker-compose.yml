@@ -96,6 +96,8 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+    networks:
+      - test
     environment:
       - cluster.name=cluster
       - discovery.type=single-node
@@ -114,6 +116,8 @@ services:
       ELASTICSEARCH_PORT: 9200
     ports:
       - "5601:5601"
+    networks:
+      - test
     depends_on:
       - elasticsearch
     healthcheck:

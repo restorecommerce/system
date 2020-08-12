@@ -3,6 +3,7 @@ networks:
   test:
 volumes:
   kafka_data:
+  zookeeper_data:
   redis_data:
   arangodb_data:
   aragodb_apps_data:
@@ -12,16 +13,18 @@ services:
   zookeeper:
     container_name: zookeeper
     hostname: zookeeper
-    image: bitnami/zookeeper:3.5.6
+    image: bitnami/zookeeper:3.6.1
     ports:
       - "2181:2181"
     environment:
       ALLOW_ANONYMOUS_LOGIN: 'yes'
+    volumes:
+      - zookeeper_data:/bitnami/zookeeper
     networks:
       - test
   kafka:
     container_name: kafka
-    image: bitnami/kafka:2.3.1
+    image: bitnami/kafka:2.6.0
     hostname: kafka
     ports:
       - "9092:9092"
@@ -31,6 +34,7 @@ services:
     networks:
       - test
     environment:
+      KAFKA_BROKER_ID: 1
       KAFKA_CFG_LISTENERS: LISTENER_LOCAL://:29092,LISTENER_DOCKER://:9092
       KAFKA_CFG_ADVERTISED_LISTENERS: LISTENER_LOCAL://localhost:29092,LISTENER_DOCKER://kafka:9092
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_LOCAL:PLAINTEXT,LISTENER_DOCKER:PLAINTEXT
@@ -48,7 +52,7 @@ services:
   redis:
     container_name: redis
     hostname: redis
-    image: redis:5.0.7-alpine
+    image: redis:6.0.6-alpine
     ports:
       - "6379:6379"
     volumes:
@@ -59,7 +63,7 @@ services:
       test: "exit 0"
   arangodb:
     container_name: arangodb
-    image: arangodb/arangodb:3.6.1
+    image: arangodb/arangodb:3.6.5
     hostname: arangodb
     ports:
       - "8529:8529"
@@ -75,7 +79,7 @@ services:
   minio:
     container_name: minio
     hostname: minio
-    image: minio/minio:RELEASE.2020-04-23T00-58-49Z
+    image: minio/minio:RELEASE.2020-07-22T00-26-33Z
     ports:
       - "9000:9000"
     networks:
@@ -93,7 +97,7 @@ services:
     command: server /data
   elasticsearch:
     container_name: restorecommerce_elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
     hostname: elasticsearch
     ports:
       - "9200:9200"
@@ -109,7 +113,7 @@ services:
       test: "exit 0"
   kibana:
     container_name: restorecommerce_kibana
-    image: docker.elastic.co/kibana/kibana:7.2.0
+    image: docker.elastic.co/kibana/kibana:7.8.0
     hostname: kibana
     environment:
       SERVER_NAME: localhost

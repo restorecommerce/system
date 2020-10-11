@@ -117,9 +117,7 @@ services:
     hostname: kibana
     environment:
       SERVER_NAME: localhost
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-      ELASTICSEARCH_HOST: elasticsearch
-      ELASTICSEARCH_PORT: 9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     ports:
       - "5601:5601"
     networks:

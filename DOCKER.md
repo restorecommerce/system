@@ -1,18 +1,24 @@
 # Docker
 
-Resources are collected here related to running an orchestration of the various [restorecommerce](https://github.com/restorecommerce) services and their backing services (dependent services).
+Resources are collected here related to launch a
+[Restorecommerce](https://github.com/restorecommerce) system using Docker.
 
 ## Prerequisites
 
-This requires Docker and [`docker`](https://docs.docker.com/) and [`docker-compose`](https://docs.docker.com/compose/) to be installed.
+- [`docker`](https://docs.docker.com/)
+- [`docker-compose`](https://docs.docker.com/compose/)
+
+## Complete System
+
+TODO
 
 ## Backing Services
 
-The backing services for a Restore Commerce system comprise:
+The backing services for a Restorecommerce system comprise:
 
 - [Apache Kafka](https://kafka.apache.org/)
 - [Redis](https://redis.io/)
-- [AranagoDB](https://www.arangodb.com/) 
+- [AranagoDB](https://www.arangodb.com/)
 - [ZooKeeper](https://zookeeper.apache.org/).
 
 These can be started with:
@@ -21,7 +27,7 @@ These can be started with:
 docker-compose -f backingservices-docker-compose.yml up
 ```
 
-...and stopped:
+...and stopped with:
 
 ```sh
 docker-compose -f backingservices-docker-compose.yml down

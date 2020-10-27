@@ -1,0 +1,1 @@
+bash createImages.bash all

@@ -89,11 +89,6 @@ services:
       MINIO_SECRET_KEY: secretKey
     volumes:
       - minio_data:/data
-    deploy:
-      restart_policy:
-        delay: 10s
-        max_attempts: 10
-        window: 60s
     command: server /data
   elasticsearch:
     container_name: restorecommerce_elasticsearch

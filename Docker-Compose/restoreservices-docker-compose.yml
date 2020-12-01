@@ -285,7 +285,7 @@ services:
   fulfillment:
     container_name: restorecommerce_fulfillment_srv
     hostname: fulfillment-srv
-    image: xingular/fulfillment-srv:latest
+    image: restorecommerce/fulfillment-srv:latest
     networks:
       - restorecommerce
     ports:

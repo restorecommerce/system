@@ -13,7 +13,7 @@ services:
   identity:
     container_name: restorecommerce_identity_srv
     hostname: identity-srv
-    image: restorecommerce/identity-srv
+    image: restorecommerce/identity-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -38,7 +38,7 @@ services:
   notification:
     container_name: restorecommerce_notification_srv
     hostname: notification-srv
-    image: restorecommerce/notification-srv
+    image: restorecommerce/notification-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -58,7 +58,7 @@ services:
   ostorage:
     container_name: restorecommerce_ostorage_srv
     hostname: ostorage-srv
-    image: restorecommerce/ostorage-srv
+    image: restorecommerce/ostorage-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -80,7 +80,7 @@ services:
   ordering:
     container_name: restorecommerce_ordering_srv
     hostname: ordering-srv
-    image: restorecommerce/ordering-srv
+    image: restorecommerce/ordering-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -102,7 +102,7 @@ services:
   catalog:
     container_name: restorecommerce_catalog_srv
     hostname: catalog-srv
-    image: restorecommerce/catalog-srv
+    image: restorecommerce/catalog-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -124,7 +124,7 @@ services:
   resource:
     container_name: restorecommerce_resource_srv
     hostname: resource-srv
-    image: restorecommerce/resource-srv
+    image: restorecommerce/resource-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -146,7 +146,7 @@ services:
   facade:
     container_name: restorecommerce_facade_srv
     hostname: facade-srv
-    image: restorecommerce/facade-srv
+    image: restorecommerce/facade-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -183,7 +183,7 @@ services:
   scheduling:
     container_name: restorecommerce_scheduling_srv
     hostname: scheduling-srv
-    image: restorecommerce/scheduling-srv
+    image: restorecommerce/scheduling-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -203,7 +203,7 @@ services:
   rendering:
     container_name: restorecommerce_rendering_srv
     hostname: rendering-srv
-    image: restorecommerce/rendering-srv
+    image: restorecommerce/rendering-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -225,7 +225,7 @@ services:
 #  indexing:
 #    container_name: restorecommerce_indexing_srv
 #    hostname: indexing-srv
-#    image: restorecommerce/indexing-srv
+#    image: restorecommerce/indexing-srv:latest
 #    ports:
 #      - "50051"
 #    depends_on:
@@ -248,7 +248,7 @@ services:
   access:
     container_name: restorecommerce_access_control_srv
     hostname: access-control-srv
-    image: restorecommerce/access-control-srv
+    image: restorecommerce/access-control-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -272,7 +272,7 @@ services:
     hostname: pdf-render-srv
     networks:
       - restorecommerce
-    image: restorecommerce/pdf-rendering-srv
+    image: restorecommerce/pdf-rendering-srv:latest
     # links:
     #   - console:restorecommerce-console
     ports:
@@ -285,7 +285,7 @@ services:
   fulfillment:
     container_name: restorecommerce_fulfillment_srv
     hostname: fulfillment-srv
-    image: xingular/fulfillment-srv
+    image: xingular/fulfillment-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -307,7 +307,7 @@ services:
   # console:
   #   hostname: restorecommerce-console
   #   container_name: restorecommerce_nginx
-  #   image: nginx
+  #   image: nginx:latest
   #   ports:
   #     - "80:8080"
   #   environment:

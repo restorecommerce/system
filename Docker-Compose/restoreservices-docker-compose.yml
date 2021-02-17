@@ -31,7 +31,7 @@ services:
       - elasticsearch:elasticsearch
       - redis:redis
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: $NODE_ENV
       authorization__enabled: "false"
 
   # Notification service
@@ -52,7 +52,7 @@ services:
       - elasticsearch:elasticsearch
       - redis:redis
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: $NODE_ENV
   
   # Object storage service
   ostorage:
@@ -74,7 +74,7 @@ services:
       - elasticsearch:elasticsearch
       - redis:redis
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: $NODE_ENV
   
   # Object storage service
   ordering:
@@ -96,7 +96,7 @@ services:
       - elasticsearch:elasticsearch
       - redis:redis
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: $NODE_ENV
   
   # Object storage service
   catalog:
@@ -118,7 +118,7 @@ services:
       - elasticsearch:elasticsearch
       - redis:redis
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: $NODE_ENV
 
   # Resource service
   resource:
@@ -140,7 +140,8 @@ services:
       - redis:redis
       - elasticsearch:elasticsearch
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: $NODE_ENV
+      authorization__enabled: "false"
 
   # Facade service
   facade:
@@ -177,7 +178,7 @@ services:
       - catalog:catalog-srv
       - fulfillment:fulfillment-srv
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: $NODE_ENV
 
   # Scheduling service
   scheduling:
@@ -197,7 +198,7 @@ services:
       - kafka:kafka
       - redis:redis
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: $NODE_ENV
 
   # Rendering service
   rendering:
@@ -219,7 +220,7 @@ services:
       - elasticsearch:elasticsearch
       - redis:redis
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: $NODE_ENV
 
   # Indexing service
 #  indexing:
@@ -240,7 +241,7 @@ services:
 #      - resource:resource-srv
 #      - access:access-control-srv
 #    environment:
-#      NODE_ENV: "production"
+#      NODE_ENV: $NODE_ENV
 #    healthcheck:
 #      test: "exit 0"
 
@@ -264,7 +265,8 @@ services:
       - elasticsearch:elasticsearch
       - redis:redis
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: $NODE_ENV
+      authorization__enabled: "false"
 
   # PDF rendering service
   pdf_render:
@@ -301,7 +303,7 @@ services:
       - elasticsearch:elasticsearch
       - redis:redis
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: $NODE_ENV
 
   # static content server / web console (currently not implemented for RC)
   # console:

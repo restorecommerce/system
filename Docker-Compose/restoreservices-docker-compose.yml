@@ -10,10 +10,10 @@ volumes:
   elasticsearch_data:
 services:
   # Identity service
-  identity:
+  identity-srv:
     container_name: restorecommerce_identity_srv
     hostname: identity-srv
-    image: restorecommerce/identity-srv:latest
+    image: ghcr.io/restorecommerce/identity-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -32,13 +32,13 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
-      authorization__enabled: "false"
+      # authorization__enabled: "false"
 
   # Notification service
-  notification:
+  notification-srv:
     container_name: restorecommerce_notification_srv
     hostname: notification-srv
-    image: restorecommerce/notification-srv:latest
+    image: ghcr.io/restorecommerce/notification-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -55,10 +55,10 @@ services:
       NODE_ENV: $NODE_ENV
   
   # Object storage service
-  ostorage:
+  ostorage-srv:
     container_name: restorecommerce_ostorage_srv
     hostname: ostorage-srv
-    image: restorecommerce/ostorage-srv:latest
+    image: ghcr.io/restorecommerce/ostorage-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -77,10 +77,10 @@ services:
       NODE_ENV: $NODE_ENV
   
   # Object storage service
-  ordering:
+  ordering-srv:
     container_name: restorecommerce_ordering_srv
     hostname: ordering-srv
-    image: restorecommerce/ordering-srv:latest
+    image: ghcr.io/restorecommerce/ordering-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -99,10 +99,10 @@ services:
       NODE_ENV: $NODE_ENV
   
   # Object storage service
-  catalog:
+  catalog-srv:
     container_name: restorecommerce_catalog_srv
     hostname: catalog-srv
-    image: restorecommerce/catalog-srv:latest
+    image: ghcr.io/restorecommerce/catalog-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -121,10 +121,10 @@ services:
       NODE_ENV: $NODE_ENV
 
   # Resource service
-  resource:
+  resource-srv:
     container_name: restorecommerce_resource_srv
     hostname: resource-srv
-    image: restorecommerce/resource-srv:latest
+    image: ghcr.io/restorecommerce/resource-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -141,50 +141,50 @@ services:
       - elasticsearch:elasticsearch
     environment:
       NODE_ENV: $NODE_ENV
-      authorization__enabled: "false"
+      # authorization__enabled: "false"
 
   # Facade service
-  facade:
+  facade-srv:
     container_name: restorecommerce_facade_srv
     hostname: facade-srv
-    image: restorecommerce/facade-srv:latest
+    image: ghcr.io/restorecommerce/facade-srv:latest
     networks:
       - restorecommerce
     ports:
       - "5000:5000"
     depends_on:
-      - identity
-      - resource
-      - notification
-      - rendering
+      - identity-srv
+      - resource-srv
+      - notification-srv
+      - rendering-srv
       - redis
-#      - indexing
-      - access
+      - indexing-srv
+      - access-control-srv
       - kafka
       - elasticsearch
     links:
       - elasticsearch:elasticsearch
-      - identity:identity-srv
+      - identity-srv:identity-srv
       - kafka:kafka
-      - notification:notification-srv
-      - resource:resource-srv
+      - notification-srv:notification-srv
+      - resource-srv:resource-srv
       - redis:redis
-      - rendering:rendering-srv
-#      - indexing:indexing-srv
-      - access:access-control-srv
-      - scheduling:scheduling-srv
-      - ostorage:ostorage-srv
-      - ordering:ordering-srv
-      - catalog:catalog-srv
-      - fulfillment:fulfillment-srv
+      - rendering-srv:rendering-srv
+      - indexing-srv:indexing-srv
+      - access-control-srv:access-control-srv
+      - scheduling-srv:scheduling-srv
+      - ostorage-srv:ostorage-srv
+      - ordering-srv:ordering-srv
+      - catalog-srv:catalog-srv
+      - fulfillment-srv:fulfillment-srv
     environment:
       NODE_ENV: $NODE_ENV
 
   # Scheduling service
-  scheduling:
+  scheduling-srv:
     container_name: restorecommerce_scheduling_srv
     hostname: scheduling-srv
-    image: restorecommerce/scheduling-srv:latest
+    image: ghcr.io/restorecommerce/scheduling-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -201,10 +201,10 @@ services:
       NODE_ENV: $NODE_ENV
 
   # Rendering service
-  rendering:
+  rendering-srv:
     container_name: restorecommerce_rendering_srv
     hostname: rendering-srv
-    image: restorecommerce/rendering-srv:latest
+    image: ghcr.io/restorecommerce/rendering-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -223,33 +223,33 @@ services:
       NODE_ENV: $NODE_ENV
 
   # Indexing service
-#  indexing:
-#    container_name: restorecommerce_indexing_srv
-#    hostname: indexing-srv
-#    image: restorecommerce/indexing-srv:latest
-#    ports:
-#      - "50051"
-#    depends_on:
-#      - kafka
-#      - elasticsearch
-#      - redis
-#      - resource
-#    links:
-#      - kafka:kafka
-#      - elasticsearch:elasticsearch
-#      - redis:redis
-#      - resource:resource-srv
-#      - access:access-control-srv
-#    environment:
-#      NODE_ENV: $NODE_ENV
-#    healthcheck:
-#      test: "exit 0"
+  indexing-srv:
+    container_name: restorecommerce_indexing_srv
+    hostname: indexing-srv
+    image: ghcr.io/restorecommerce/indexing-srv:latest
+    networks:
+      - restorecommerce
+    ports:
+      - "50064:50051"
+    depends_on:
+      - kafka
+      - elasticsearch
+      - redis
+      - resource-srv
+    links:
+      - kafka:kafka
+      - elasticsearch:elasticsearch
+      - redis:redis
+      - resource-srv:resource-srv
+      - access-control-srv:access-control-srv
+    environment:
+      NODE_ENV: $NODE_ENV
 
   # access control service
-  access:
+  access-control-srv:
     container_name: restorecommerce_access_control_srv
     hostname: access-control-srv
-    image: restorecommerce/access-control-srv:latest
+    image: ghcr.io/restorecommerce/access-control-srv:latest
     networks:
       - restorecommerce
     ports:
@@ -266,10 +266,10 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
-      authorization__enabled: "false"
+      # authorization__enabled: "false"
 
   # PDF rendering service
-  pdf_render:
+  pdf-render-srv:
     container_name: restorecommerce_pdf_render_srv
     hostname: pdf-render-srv
     networks:
@@ -284,10 +284,10 @@ services:
       API_TOKENS: "VBYmqRQxvXlmLyQc5jz5ASxVbYUqJMhM"
 
   # fulfillment service
-  fulfillment:
+  fulfillment-srv:
     container_name: restorecommerce_fulfillment_srv
     hostname: fulfillment-srv
-    image: restorecommerce/fulfillment-srv:latest
+    image: ghcr.io/restorecommerce/fulfillment-srv:latest
     networks:
       - restorecommerce
     ports:

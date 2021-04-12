@@ -32,7 +32,6 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
-      authorization__enabled: "false"
 
   # Notification service
   notification-srv:
@@ -141,7 +140,6 @@ services:
       - elasticsearch:elasticsearch
     environment:
       NODE_ENV: $NODE_ENV
-      authorization__enabled: "false"
 
   # Facade service
   facade-srv:
@@ -266,7 +264,6 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
-      authorization__enabled: "false"
 
   # PDF rendering service
   pdf-render-srv:

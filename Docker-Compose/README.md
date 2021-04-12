@@ -40,7 +40,7 @@ The backing services for a Restorecommerce system comprise:
 
 - [Apache Kafka](https://kafka.apache.org/)
 - [Redis](https://redis.io/)
-- [AranagoDB](https://www.arangodb.com/)
+- [ArangoDB](https://www.arangodb.com/)
 - [ZooKeeper](https://zookeeper.apache.org/).
 
 These can be launched with:

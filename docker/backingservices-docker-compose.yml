@@ -24,7 +24,7 @@ services:
       - restorecommerce
   kafka:
     container_name: kafka
-    image: bitnami/kafka:2.8.1
+    image: bitnami/kafka:3.0.0
     hostname: kafka
     ports:
       - "9092:9092"

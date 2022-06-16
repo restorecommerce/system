@@ -16,6 +16,7 @@ A complete system can be launched with:
 ```sh
 ./all up
 ```
+
 ...stopped with:
 
 ```sh
@@ -48,6 +49,7 @@ These can be launched with:
 ```sh
 ./backing up
 ```
+
 ...stopped with:
 
 ```sh
@@ -68,7 +70,7 @@ docker volume prune
 
 ## Troubleshooting
 
-In case the ElasticSearch container suddenly stops, just add `vm.max_map_count=262144` to your 
+In case the ElasticSearch container suddenly stops, just add `vm.max_map_count=262144` to your
 `/etc/sysctl.conf` file and reload the configuration file with:
 
 ```sh

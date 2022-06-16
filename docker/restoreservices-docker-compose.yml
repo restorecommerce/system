@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 networks:
   restorecommerce:
 volumes:
@@ -52,7 +52,7 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
-  
+
   # Object storage service
   ostorage-srv:
     container_name: restorecommerce_ostorage_srv
@@ -74,7 +74,7 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
-  
+
   # Object storage service
   ordering-srv:
     container_name: restorecommerce_ordering_srv
@@ -96,7 +96,7 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
-  
+
   # Object storage service
   catalog-srv:
     container_name: restorecommerce_catalog_srv

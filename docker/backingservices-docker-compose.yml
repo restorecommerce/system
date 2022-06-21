@@ -103,6 +103,8 @@ services:
     environment:
       - cluster.name=cluster
       - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled=false
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     healthcheck:

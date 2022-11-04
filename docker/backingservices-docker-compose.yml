@@ -7,9 +7,25 @@ volumes:
   redis_data:
   arangodb_data:
   aragodb_apps_data:
-  minio_data:
+  cloudserver_data:
   elasticsearch_data:
 services:
+  zookeeper:
+    container_name: zookeeper
+    hostname: zookeeper
+    image: bitnami/zookeeper:3.8.0
+    ports:
+      - "2181:2181"
+    deploy:
+      resources:
+        limits:
+          memory: 1536m
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: 'yes'
+    volumes:
+      - zookeeper_data:/bitnami/zookeeper
+    networks:
+      - restorecommerce
   kafka:
     container_name: kafka
     image: bitnami/kafka:3.3.1
@@ -21,20 +37,18 @@ services:
       resources:
         limits:
           memory: 6144m
+    depends_on:
+      - zookeeper
     networks:
       - restorecommerce
     environment:
-      KAFKA_ENABLE_KRAFT: 'yes'
-      KAFKA_KRAFT_CLUSTER_ID: 1
-      KAFKA_CFG_PROCESS_ROLES: 'broker,controller'
-      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_BROKER_ID: 1
-      KAFKA_CFG_LISTENERS: LISTENER_LOCAL://:29092,LISTENER_DOCKER://:9092,CONTROLLER://:9093
+      KAFKA_CFG_LISTENERS: LISTENER_LOCAL://:29092,LISTENER_DOCKER://:9092
       KAFKA_CFG_ADVERTISED_LISTENERS: LISTENER_LOCAL://localhost:29092,LISTENER_DOCKER://kafka:9092
-      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_LOCAL:PLAINTEXT,LISTENER_DOCKER:PLAINTEXT,CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER,CONTROLLER
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_LOCAL:PLAINTEXT,LISTENER_DOCKER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER
       ALLOW_PLAINTEXT_LISTENER: 'yes'
-      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@127.0.0.1:9093
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: 'true'
       KAFKA_CFG_DELETE_TOPIC_ENABLE: 'true'
       KAFKA_CFG_LOG_RETENTION_HOURS: -1
@@ -78,21 +92,21 @@ services:
       ARANGO_NO_AUTH: 1
     healthcheck:
       test: "exit 0"
-  minio:
-    container_name: minio
-    hostname: minio
-    image: minio/minio:RELEASE.2022-10-29T06-21-33Z
+  cloudserver:
+    container_name: cloudserver
+    hostname: cloudserver
+    image: zenko/cloudserver:latest-7.70.9
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "9990:9990"
+      - "9991:9991"
     networks:
       - restorecommerce
     environment:
-      MINIO_ACCESS_KEY: accessKey
-      MINIO_SECRET_KEY: secretKey
+      CLOUDSERVER_ACCESS_KEY: accessKey1
+      CLOUDSERVER_SECRET_KEY: verySecretKey1
     volumes:
-      - minio_data:/data
-    command: server /data --console-address ":9001"
+      - cloudserver_data:/data
+    command: server /data --console-address ":9991"
   elasticsearch:
     container_name: restorecommerce_elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3

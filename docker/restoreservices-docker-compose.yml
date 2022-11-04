@@ -6,7 +6,7 @@ volumes:
   redis_data:
   arangodb_data:
   aragodb_apps_data:
-  minio_data:
+  cloudserver_data:
   elasticsearch_data:
 services:
   # Identity service
@@ -63,12 +63,12 @@ services:
     ports:
       - "50066:50051"
     depends_on:
-      - minio
+      - cloudserver
       - kafka
       - elasticsearch
       - redis
     links:
-      - minio:minio
+      - cloudserver:cloudserver
       - kafka:kafka
       - elasticsearch:elasticsearch
       - redis:redis

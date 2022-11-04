@@ -106,7 +106,6 @@ services:
       CLOUDSERVER_SECRET_KEY: verySecretKey1
     volumes:
       - cloudserver_data:/data
-    command: server /data --console-address ":9991"
   elasticsearch:
     container_name: restorecommerce_elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3

@@ -97,6 +97,7 @@ services:
     hostname: cloudserver
     image: zenko/cloudserver:latest-7.70.9
     ports:
+      - "8000:8000"
       - "9990:9990"
       - "9991:9991"
     networks:

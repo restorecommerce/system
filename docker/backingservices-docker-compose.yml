@@ -38,7 +38,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - kafka_data:/bitnami/kafka
     healthcheck:
-      test: "exit 0"
+      test: ["CMD", "bash", "-c", "unset" , "JMX_PORT" ,";" ,"/opt/bitnami/kafka/bin/kafka-topics.sh","--zookeeper","zookeeper:2181","--list"]
   redis:
     container_name: redis
     hostname: redis
@@ -54,7 +54,7 @@ services:
     networks:
       - restorecommerce
     healthcheck:
-      test: "exit 0"
+      test: "redis-cli ping"
   arangodb:
     container_name: arangodb
     image: arangodb/arangodb:3.10.0
@@ -113,7 +113,7 @@ services:
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     healthcheck:
-      test: "exit 0"
+      test: "if [[ $$(curl -fsSL 'http://localhost:9200/_cat/health?h=status' | sed -r 's/^[[:space:]]+|[[:space:]]+$$//g') != 'red' ]]; then exit 0; else exit 1; fi"
   kibana:
     container_name: restorecommerce_kibana
     image: docker.elastic.co/kibana/kibana:8.4.3

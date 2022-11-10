@@ -73,7 +73,8 @@ services:
     environment:
       ARANGO_NO_AUTH: 1
     healthcheck:
-      test: "exit 0"
+      test: "wget -O - localhost:8529/_api/version"
+    # command: arangod --database.auto-upgrade=true
   cloudserver:
     container_name: cloudserver
     hostname: cloudserver

@@ -19,7 +19,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 6144m
+          memory: 3072m
     networks:
       - restorecommerce
     environment:
@@ -103,7 +103,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 6144m
+          memory: 4096m
     networks:
       - restorecommerce
     environment:

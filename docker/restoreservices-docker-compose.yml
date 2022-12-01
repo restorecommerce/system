@@ -7,6 +7,7 @@ volumes:
   arangodb_data:
   aragodb_apps_data:
   cloudserver_data:
+  cloudserver_metadata:
   elasticsearch_data:
 services:
   # Identity service

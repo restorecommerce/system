@@ -7,6 +7,7 @@ volumes:
   arangodb_data:
   aragodb_apps_data:
   cloudserver_data:
+  cloudserver_metadata:
   elasticsearch_data:
 services:
   kafka:
@@ -92,7 +93,8 @@ services:
       CLOUDSERVER_SECRET_KEY: verySecretKey1
       ENDPOINT: cloudserver
     volumes:
-      - cloudserver_data:/data
+      - cloudserver_data:/usr/src/app/localData
+      - cloudserver_metadata:/usr/src/app/localMetadata
   elasticsearch:
     container_name: restorecommerce_elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3

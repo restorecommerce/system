@@ -7,7 +7,7 @@ Docker Compose.
 ## Prerequisites
 
 - [`docker`](https://docs.docker.com/)
-- [`docker-compose`](https://docs.docker.com/compose/)
+- [`docker compose`](https://docs.docker.com/compose/)
 
 ## Complete System
 

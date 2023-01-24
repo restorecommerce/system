@@ -15,6 +15,7 @@ services:
     container_name: restorecommerce_identity_srv
     hostname: identity-srv
     image: ghcr.io/restorecommerce/identity-srv:latest
+    restart: always
     networks:
       - restorecommerce
     ports:
@@ -40,6 +41,7 @@ services:
     container_name: restorecommerce_notification_srv
     hostname: notification-srv
     image: ghcr.io/restorecommerce/notification-srv:latest
+    restart: always
     networks:
       - restorecommerce
     ports:
@@ -61,6 +63,7 @@ services:
     container_name: restorecommerce_ostorage_srv
     hostname: ostorage-srv
     image: ghcr.io/restorecommerce/ostorage-srv:latest
+    restart: always
     networks:
       - restorecommerce
     ports:
@@ -84,6 +87,7 @@ services:
     container_name: restorecommerce_ordering_srv
     hostname: ordering-srv
     image: ghcr.io/restorecommerce/ordering-srv:latest
+    restart: always
     networks:
       - restorecommerce
     ports:
@@ -107,6 +111,7 @@ services:
     container_name: restorecommerce_catalog_srv
     hostname: catalog-srv
     image: ghcr.io/restorecommerce/catalog-srv:latest
+    restart: always
     networks:
       - restorecommerce
     ports:
@@ -130,6 +135,7 @@ services:
     container_name: restorecommerce_resource_srv
     hostname: master-data-srv
     image: ghcr.io/restorecommerce/resource-srv:latest
+    restart: always
     networks:
       - restorecommerce
     ports:
@@ -153,6 +159,7 @@ services:
     container_name: restorecommerce_facade_srv
     hostname: facade-srv
     image: ghcr.io/restorecommerce/facade-srv:latest
+    restart: always
     networks:
       - restorecommerce
     ports:
@@ -189,6 +196,7 @@ services:
     container_name: restorecommerce_scheduling_srv
     hostname: scheduling-srv
     image: ghcr.io/restorecommerce/scheduling-srv:latest
+    restart: always
     networks:
       - restorecommerce
     ports:
@@ -211,6 +219,7 @@ services:
     container_name: restorecommerce_rendering_srv
     hostname: rendering-srv
     image: ghcr.io/restorecommerce/rendering-srv:latest
+    restart: always
     networks:
       - restorecommerce
     ports:
@@ -230,33 +239,35 @@ services:
       redis__offsetStoreInterval: 15000
 
   # Indexing service
-  # indexing-srv:
-  #   container_name: restorecommerce_indexing_srv
-  #   hostname: indexing-srv
-  #   image: ghcr.io/restorecommerce/indexing-srv:latest
-  #   networks:
-  #     - restorecommerce
-  #   ports:
-  #     - "50064:50051"
-  #   depends_on:
-  #     - kafka
-  #     - elasticsearch
-  #     - redis
-  #     - resource-srv
-  #   links:
-  #     - kafka:kafka
-  #     - elasticsearch:elasticsearch
-  #     - redis:redis
-  #     - resource-srv:resource-srv
-  #     - access-control-srv:access-control-srv
-  #   environment:
-  #     NODE_ENV: $NODE_ENV
+  indexing-srv:
+    container_name: restorecommerce_indexing_srv
+    hostname: indexing-srv
+    image: ghcr.io/restorecommerce/indexing-srv:latest
+    restart: always
+    networks:
+      - restorecommerce
+    ports:
+      - "50064:50051"
+    depends_on:
+      - kafka
+      - elasticsearch
+      - redis
+      - resource-srv
+    links:
+      - kafka:kafka
+      - elasticsearch:elasticsearch
+      - redis:redis
+      - resource-srv:resource-srv
+      - access-control-srv:access-control-srv
+    environment:
+      NODE_ENV: $NODE_ENV
 
   # access control service
   access-control-srv:
     container_name: restorecommerce_access_control_srv
     hostname: access-control-srv
     image: ghcr.io/restorecommerce/access-control-srv:latest
+    restart: always
     networks:
       - restorecommerce
     ports:
@@ -282,6 +293,7 @@ services:
     networks:
       - restorecommerce
     image: restorecommerce/pdf-rendering-srv:latest
+    restart: always
     # links:
     #   - console:restorecommerce-console
     ports:
@@ -291,26 +303,27 @@ services:
       API_TOKENS: "VBYmqRQxvXlmLyQc5jz5ASxVbYUqJMhM"
 
   # fulfillment service
-  # fulfillment-srv:
-  #   container_name: restorecommerce_fulfillment_srv
-  #   hostname: fulfillment-srv
-  #   image: ghcr.io/restorecommerce/fulfillment-srv:latest
-  #   networks:
-  #     - restorecommerce
-  #   ports:
-  #     - "50067:50051"
-  #   depends_on:
-  #     - arangodb
-  #     - kafka
-  #     - elasticsearch
-  #     - redis
-  #   links:
-  #     - arangodb:arangodb
-  #     - kafka:kafka
-  #     - elasticsearch:elasticsearch
-  #     - redis:redis
-  #   environment:
-  #     NODE_ENV: $NODE_ENV
+  fulfillment-srv:
+    container_name: restorecommerce_fulfillment_srv
+    hostname: fulfillment-srv
+    image: ghcr.io/restorecommerce/fulfillment-srv:latest
+    restart: always
+    networks:
+      - restorecommerce
+    ports:
+      - "50067:50051"
+    depends_on:
+      - arangodb
+      - kafka
+      - elasticsearch
+      - redis
+    links:
+      - arangodb:arangodb
+      - kafka:kafka
+      - elasticsearch:elasticsearch
+      - redis:redis
+    environment:
+      NODE_ENV: $NODE_ENV
 
   # static content server / web console (currently not implemented for RC)
   # console:

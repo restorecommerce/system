@@ -12,7 +12,8 @@ volumes:
 services:
   kafka:
     container_name: kafka
-    image: bitnami/kafka:3.3.1
+    image: bitnami/kafka:3.7.0
+    restart: always
     hostname: kafka
     ports:
       - "9092:9092"
@@ -45,7 +46,8 @@ services:
   redis:
     container_name: redis
     hostname: redis
-    image: redis:7.0.5-alpine
+    image: redis:7.2.4-alpine
+    restart: always
     ports:
       - "6379:6379"
     deploy:
@@ -60,7 +62,7 @@ services:
       test: "redis-cli ping"
   arangodb:
     container_name: arangodb
-    image: arangodb/arangodb:3.10.0
+    image: arangodb/arangodb:3.12.0
     hostname: arangodb
     ports:
       - "8529:8529"
@@ -82,6 +84,7 @@ services:
     container_name: cloudserver
     hostname: cloudserver
     image: zenko/cloudserver:latest-7.70.10
+    restart: always
     ports:
       - "8000:8000"
       - "9990:9990"
@@ -97,7 +100,8 @@ services:
       - cloudserver_metadata:/usr/src/app/localMetadata
   elasticsearch:
     container_name: restorecommerce_elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
+    restart: always
     hostname: elasticsearch
     ports:
       - "9200:9200"
@@ -121,7 +125,8 @@ services:
       test: "if [[ $$(curl -fsSL 'http://localhost:9200/_cat/health?h=status' | sed -r 's/^[[:space:]]+|[[:space:]]+$$//g') != 'red' ]]; then exit 0; else exit 1; fi"
   kibana:
     container_name: restorecommerce_kibana
-    image: docker.elastic.co/kibana/kibana:8.4.3
+    image: docker.elastic.co/kibana/kibana:8.12.1
+    restart: always
     hostname: kibana
     environment:
       SERVER_NAME: localhost

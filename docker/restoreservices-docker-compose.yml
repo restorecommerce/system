@@ -146,7 +146,7 @@ services:
   facade-srv:
     container_name: restorecommerce_facade_srv
     hostname: facade-srv
-    image: restorecommerce/facade-srv:1.0.5
+    image: ghcr.io/restorecommerce/facade-srv:latest
     networks:
       - restorecommerce
     ports:

@@ -157,7 +157,6 @@ services:
       - notification-srv
       - rendering-srv
       - redis
-      - indexing-srv
       - access-control-srv
       - kafka
       - elasticsearch
@@ -169,7 +168,6 @@ services:
       - resource-srv:resource-srv
       - redis:redis
       - rendering-srv:rendering-srv
-      - indexing-srv:indexing-srv
       - access-control-srv:access-control-srv
       - scheduling-srv:scheduling-srv
       - ostorage-srv:ostorage-srv
@@ -222,27 +220,27 @@ services:
       NODE_ENV: $NODE_ENV
 
   # Indexing service
-  indexing-srv:
-    container_name: restorecommerce_indexing_srv
-    hostname: indexing-srv
-    image: ghcr.io/restorecommerce/indexing-srv:latest
-    networks:
-      - restorecommerce
-    ports:
-      - "50064:50051"
-    depends_on:
-      - kafka
-      - elasticsearch
-      - redis
-      - resource-srv
-    links:
-      - kafka:kafka
-      - elasticsearch:elasticsearch
-      - redis:redis
-      - resource-srv:resource-srv
-      - access-control-srv:access-control-srv
-    environment:
-      NODE_ENV: $NODE_ENV
+  # indexing-srv:
+  #   container_name: restorecommerce_indexing_srv
+  #   hostname: indexing-srv
+  #   image: ghcr.io/restorecommerce/indexing-srv:latest
+  #   networks:
+  #     - restorecommerce
+  #   ports:
+  #     - "50064:50051"
+  #   depends_on:
+  #     - kafka
+  #     - elasticsearch
+  #     - redis
+  #     - resource-srv
+  #   links:
+  #     - kafka:kafka
+  #     - elasticsearch:elasticsearch
+  #     - redis:redis
+  #     - resource-srv:resource-srv
+  #     - access-control-srv:access-control-srv
+  #   environment:
+  #     NODE_ENV: $NODE_ENV
 
   # access control service
   access-control-srv:

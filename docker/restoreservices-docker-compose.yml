@@ -121,8 +121,8 @@ services:
       NODE_ENV: $NODE_ENV
 
   # Resource service
-  master-data-srv:
-    container_name: restorecommerce_master_data_srv
+  resource-srv:
+    container_name: restorecommerce_resource_srv
     hostname: master-data-srv
     image: ghcr.io/restorecommerce/resource-srv:latest
     networks:
@@ -146,14 +146,14 @@ services:
   facade-srv:
     container_name: restorecommerce_facade_srv
     hostname: facade-srv
-    image: ghcr.io/restorecommerce/facade-srv:latest # ghcr.io/restorecommerce/facade-srv:latest
+    image: ghcr.io/restorecommerce/facade-srv:latest
     networks:
       - restorecommerce
     ports:
       - "5000:5000"
     depends_on:
       - identity-srv
-      - master-data-srv
+      - resource-srv
       - notification-srv
       - rendering-srv
       - redis
@@ -165,7 +165,7 @@ services:
       - identity-srv:identity-srv
       - kafka:kafka
       - notification-srv:notification-srv
-      - master-data-srv:master-data-srv
+      - resource-srv:master-data-srv
       - redis:redis
       - rendering-srv:rendering-srv
       - access-control-srv:access-control-srv
@@ -173,7 +173,7 @@ services:
       - ostorage-srv:ostorage-srv
       - ordering-srv:ordering-srv
       - catalog-srv:catalog-srv
-      - fulfillment-srv:fulfillment-srv
+      #- fulfillment-srv:fulfillment-srv
     environment:
       NODE_ENV: $NODE_ENV
 
@@ -280,26 +280,26 @@ services:
       API_TOKENS: "VBYmqRQxvXlmLyQc5jz5ASxVbYUqJMhM"
 
   # fulfillment service
-  fulfillment-srv:
-    container_name: restorecommerce_fulfillment_srv
-    hostname: fulfillment-srv
-    image: ghcr.io/restorecommerce/fulfillment-srv:latest
-    networks:
-      - restorecommerce
-    ports:
-      - "50067:50051"
-    depends_on:
-      - arangodb
-      - kafka
-      - elasticsearch
-      - redis
-    links:
-      - arangodb:arangodb
-      - kafka:kafka
-      - elasticsearch:elasticsearch
-      - redis:redis
-    environment:
-      NODE_ENV: $NODE_ENV
+  # fulfillment-srv:
+  #   container_name: restorecommerce_fulfillment_srv
+  #   hostname: fulfillment-srv
+  #   image: ghcr.io/restorecommerce/fulfillment-srv:latest
+  #   networks:
+  #     - restorecommerce
+  #   ports:
+  #     - "50067:50051"
+  #   depends_on:
+  #     - arangodb
+  #     - kafka
+  #     - elasticsearch
+  #     - redis
+  #   links:
+  #     - arangodb:arangodb
+  #     - kafka:kafka
+  #     - elasticsearch:elasticsearch
+  #     - redis:redis
+  #   environment:
+  #     NODE_ENV: $NODE_ENV
 
   # static content server / web console (currently not implemented for RC)
   # console:

@@ -80,7 +80,7 @@ services:
   ordering-srv:
     container_name: restorecommerce_ordering_srv
     hostname: ordering-srv
-    image: docker.io/restorecommerce/ordering-srv:latest
+    image: ghcr.io/restorecommerce/ordering-srv:latest
     networks:
       - restorecommerce
     ports:

@@ -186,6 +186,7 @@ services:
       - restorecommerce
     ports:
       - "50054:50051"
+      - "3000:3000"
     depends_on:
       - redis
       - kafka

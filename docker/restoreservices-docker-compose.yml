@@ -318,3 +318,15 @@ services:
   #     /bin/bash -c "envsubst < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   #   healthcheck:
   #     test: "exit 0"
+
+# Data
+  data:
+    container_name: restorecommerce_data
+    hostname: data
+    image: ghcr.io/restorecommerce/data:latest
+    networks:
+      - restorecommerce
+    links:
+      - facade-srv:facade-srv
+    environment:
+      NODE_ENV: $NODE_ENV

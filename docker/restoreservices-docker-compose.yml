@@ -33,6 +33,7 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
+      redis__offsetStoreInterval: 15000
 
   # Notification service
   notification-srv:
@@ -53,6 +54,7 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
+      redis__offsetStoreInterval: 15000
 
   # Object storage service
   ostorage-srv:
@@ -75,6 +77,7 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
+      redis__offsetStoreInterval: 15000
 
   # Object storage service
   ordering-srv:
@@ -97,6 +100,7 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
+      redis__offsetStoreInterval: 15000
 
   # Object storage service
   catalog-srv:
@@ -119,6 +123,7 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
+      redis__offsetStoreInterval: 15000
 
   # Resource service
   resource-srv:
@@ -141,6 +146,7 @@ services:
       - elasticsearch:elasticsearch
     environment:
       NODE_ENV: $NODE_ENV
+      redis__offsetStoreInterval: 15000
 
   # Facade service
   facade-srv:
@@ -176,6 +182,7 @@ services:
       #- fulfillment-srv:fulfillment-srv
     environment:
       NODE_ENV: $NODE_ENV
+      redis__offsetStoreInterval: 15000
 
   # Scheduling service
   scheduling-srv:
@@ -197,6 +204,7 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
+      redis__offsetStoreInterval: 15000
 
   # Rendering service
   rendering-srv:
@@ -219,6 +227,7 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
+      redis__offsetStoreInterval: 15000
 
   # Indexing service
   # indexing-srv:
@@ -264,6 +273,7 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
+      redis__offsetStoreInterval: 15000
 
   # PDF rendering service
   pdf-render-srv:

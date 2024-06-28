@@ -238,30 +238,6 @@ services:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
 
-  # Indexing service
-  indexing-srv:
-    container_name: restorecommerce_indexing_srv
-    hostname: indexing-srv
-    image: ghcr.io/restorecommerce/indexing-srv:latest
-    restart: always
-    networks:
-      - restorecommerce
-    ports:
-      - "50064:50051"
-    depends_on:
-      - kafka
-      - elasticsearch
-      - redis
-      - resource-srv
-    links:
-      - kafka:kafka
-      - elasticsearch:elasticsearch
-      - redis:redis
-      - resource-srv:resource-srv
-      - access-control-srv:access-control-srv
-    environment:
-      NODE_ENV: $NODE_ENV
-
   # access control service
   access-control-srv:
     container_name: restorecommerce_access_control_srv

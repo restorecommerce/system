@@ -23,6 +23,12 @@ A complete system can be launched with:
 ./all stop
 ```
 
+### Optional, the system can be lauched with a project prefix:
+```./all.bash -p [PROJECT_PREFIX] up -d```
+
+...stopped with:
+```./all.bash -p [PROJECT_PREFIX] stop```
+
 To remove all containers (except volumes):
 
 ```sh

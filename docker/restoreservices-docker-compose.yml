@@ -86,7 +86,7 @@ services:
   ordering-srv:
     container_name: restorecommerce_ordering_srv
     hostname: ordering-srv
-    image: docker.io/restorecommerce/ordering-srv:latest
+    image: ghcr.io/restorecommerce/ordering-srv:latest
     restart: always
     networks:
       - restorecommerce
@@ -186,7 +186,7 @@ services:
       - ostorage-srv:ostorage-srv
       - ordering-srv:ordering-srv
       - catalog-srv:catalog-srv
-      #- fulfillment-srv:fulfillment-srv
+      - fulfillment-srv:fulfillment-srv
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
@@ -273,7 +273,7 @@ services:
     # links:
     #   - console:restorecommerce-console
     ports:
-      - "3001:9000"
+      - "3001:50051"
     environment:
       ALLOW_HTTP: "true"
       API_TOKENS: "VBYmqRQxvXlmLyQc5jz5ASxVbYUqJMhM"

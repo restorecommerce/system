@@ -92,6 +92,7 @@ services:
     networks:
       - restorecommerce
     environment:
+      REMOTE_MANAGEMENT_DISABLE: 1
       CLOUDSERVER_ACCESS_KEY: accessKey1
       CLOUDSERVER_SECRET_KEY: verySecretKey1
       ENDPOINT: cloudserver

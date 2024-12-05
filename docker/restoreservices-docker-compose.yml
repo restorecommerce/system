@@ -186,6 +186,7 @@ services:
       - ordering-srv:ordering-srv
       - catalog-srv:catalog-srv
       - fulfillment-srv:fulfillment-srv
+      - invoicing-srv:invoicing-srv
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
@@ -287,6 +288,29 @@ services:
       - restorecommerce
     ports:
       - "50067:50051"
+    depends_on:
+      - arangodb
+      - kafka
+      - elasticsearch
+      - redis
+    links:
+      - arangodb:arangodb
+      - kafka:kafka
+      - elasticsearch:elasticsearch
+      - redis:redis
+    environment:
+      NODE_ENV: $NODE_ENV
+  
+  # invoicing-srv
+  invoicing-srv:
+    container_name: restorecommerce_invoicing_srv
+    hostname: invoicing-srv
+    image: ghcr.io/restorecommerce/invoicing-srv:latest
+    restart: always
+    networks:
+      - restorecommerce
+    ports:
+      - "50069:50051"
     depends_on:
       - arangodb
       - kafka

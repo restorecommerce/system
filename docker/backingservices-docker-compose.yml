@@ -84,7 +84,7 @@ services:
   cloudserver:
     container_name: cloudserver
     hostname: cloudserver
-    image: registry.scality.com/cloudserver/cloudserver:8.8.20
+    image: ghcr.io/scality/cloudserver:8.8.20
     restart: always
     ports:
       - "8000:8000"

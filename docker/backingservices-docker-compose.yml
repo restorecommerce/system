@@ -79,7 +79,7 @@ services:
     environment:
       ARANGO_NO_AUTH: 1
     healthcheck:
-      test: "wget -O - arangodb:8529/_api/version | grep 3.12.2"
+      test: "wget -O - arangodb:8529/_api/version | grep 3.12.4"
     # command: arangod --database.auto-upgrade=true
   cloudserver:
     container_name: cloudserver

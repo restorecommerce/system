@@ -263,12 +263,12 @@ services:
       redis__offsetStoreInterval: 15000
 
   # PDF rendering service
-  pdf-render-srv:
+  pdf-rendering-srv:
     container_name: restorecommerce_pdf_render_srv
-    hostname: pdf-render-srv
+    hostname: pdf-rendering-srv
     networks:
       - restorecommerce
-    image: restorecommerce/pdf-rendering-srv:latest
+    image: ghcr.io/restorecommerce/pdf-rendering-srv:latest
     restart: always
     # links:
     #   - console:restorecommerce-console
@@ -299,7 +299,7 @@ services:
       - elasticsearch:elasticsearch
       - redis:redis
     environment:
-      NODE_ENV: $NODE_ENV
+      NODE_ENV: $NODE_ENV    
   
   # invoicing-srv
   invoicing-srv:

@@ -12,7 +12,7 @@ services:
   kafka:
     container_name: kafka
     image: apache/kafka:4.0.1
-    restart: always
+    restart: $RESTART
     hostname: kafka
     ports:
       - "9092:9092"
@@ -44,7 +44,7 @@ services:
     container_name: redis
     hostname: redis
     image: redis:8.2.2-alpine3.22
-    restart: always
+    restart: $RESTART
     ports:
       - "6379:6379"
     deploy:
@@ -61,7 +61,7 @@ services:
     container_name: arangodb
     hostname: arangodb
     image: arangodb/arangodb:3.12
-    restart: always
+    restart: $RESTART
     ports:
       - "8529:8529"
     deploy:
@@ -82,7 +82,7 @@ services:
     container_name: cloudserver
     hostname: cloudserver
     image: ghcr.io/scality/cloudserver:9.0.30
-    restart: always
+    restart: $RESTART
     ports:
       - "8000:8000"
       - "9990:9990"
@@ -100,7 +100,7 @@ services:
   elasticsearch:
     container_name: restorecommerce_elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:9.1.5
-    restart: always
+    restart: $RESTART
     hostname: elasticsearch
     ports:
       - "9200:9200"
@@ -125,7 +125,7 @@ services:
   kibana:
     container_name: restorecommerce_kibana
     image: docker.elastic.co/kibana/kibana:9.1.5
-    restart: always
+    restart: $RESTART
     hostname: kibana
     environment:
       SERVER_NAME: localhost

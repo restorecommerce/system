@@ -14,7 +14,7 @@ services:
     container_name: restorecommerce_identity_srv
     hostname: identity-srv
     image: ghcr.io/restorecommerce/identity-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -40,7 +40,7 @@ services:
     container_name: restorecommerce_notification_srv
     hostname: notification-srv
     image: ghcr.io/restorecommerce/notification-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -56,13 +56,19 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
+      server__mailer__host: $server__mailer__host
+      server__mailer__port: $server__mailer__port
+      server__mailer__auth__user: $server__mailer__auth__user
+      server__mailer__auth__pass: $server__mailer__auth__pass
+      server__mailer__tls__rejectUnauthorized: $server__mailer__tls__rejectUnauthorized
+      server__mailer__address: $server__mailer__address
 
   # Object storage service
   ostorage-srv:
     container_name: restorecommerce_ostorage_srv
     hostname: ostorage-srv
     image: ghcr.io/restorecommerce/ostorage-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -86,7 +92,7 @@ services:
     container_name: restorecommerce_ordering_srv
     hostname: ordering-srv
     image: ghcr.io/restorecommerce/ordering-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -110,7 +116,7 @@ services:
     container_name: restorecommerce_catalog_srv
     hostname: catalog-srv
     image: ghcr.io/restorecommerce/catalog-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -134,7 +140,7 @@ services:
     container_name: restorecommerce_resource_srv
     hostname: master-data-srv
     image: ghcr.io/restorecommerce/resource-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -158,7 +164,7 @@ services:
     container_name: restorecommerce_facade_srv
     hostname: facade-srv
     image: ghcr.io/restorecommerce/facade-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -196,7 +202,7 @@ services:
     container_name: restorecommerce_scheduling_srv
     hostname: scheduling-srv
     image: ghcr.io/restorecommerce/scheduling-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -219,7 +225,7 @@ services:
     container_name: restorecommerce_rendering_srv
     hostname: rendering-srv
     image: ghcr.io/restorecommerce/rendering-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -243,7 +249,7 @@ services:
     container_name: restorecommerce_access_control_srv
     hostname: access-control-srv
     image: ghcr.io/restorecommerce/access-control-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -269,7 +275,7 @@ services:
     networks:
       - restorecommerce
     image: ghcr.io/restorecommerce/pdf-rendering-srv:latest
-    restart: always
+    restart: $RESTART
     # links:
     #   - console:restorecommerce-console
     ports:
@@ -283,7 +289,7 @@ services:
     container_name: restorecommerce_fulfillment_srv
     hostname: fulfillment-srv
     image: ghcr.io/restorecommerce/fulfillment-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -299,14 +305,22 @@ services:
       - elasticsearch:elasticsearch
       - redis:redis
     environment:
-      NODE_ENV: $NODE_ENV    
+      NODE_ENV: $NODE_ENV
+      defaults__Couriers__DHLRest__configuration__value__ordering__username: $defaults__Couriers__DHLRest__configuration__value__ordering__username
+      defaults__Couriers__DHLRest__configuration__value__ordering__password: $defaults__Couriers__DHLRest__configuration__value__ordering__password
+      defaults__Couriers__DHLRest__configuration__value__ordering__client_id: $defaults__Couriers__DHLRest__configuration__value__ordering__client_id
+      defaults__Couriers__DHLRest__configuration__value__ordering__client_secret: $defaults__Couriers__DHLRest__configuration__value__ordering__client_secret
+      defaults__Couriers__DHLRest__configuration__value__tracking__username: $defaults__Couriers__DHLRest__configuration__value__tracking__username
+      defaults__Couriers__DHLRest__configuration__value__tracking__password: $defaults__Couriers__DHLRest__configuration__value__tracking__password
+      defaults__Couriers__DHLRest__configuration__value__tracking__client_id: $defaults__Couriers__DHLRest__configuration__value__tracking__client_id
+      defaults__Couriers__DHLRest__configuration__value__tracking__client_secret: $defaults__Couriers__DHLRest__configuration__value__tracking__client_secret
   
   # invoicing-srv
   invoicing-srv:
     container_name: restorecommerce_invoicing_srv
     hostname: invoicing-srv
     image: ghcr.io/restorecommerce/invoicing-srv:latest
-    restart: always
+    restart: $RESTART
     networks:
       - restorecommerce
     ports:
@@ -321,6 +335,7 @@ services:
       - kafka:kafka
       - elasticsearch:elasticsearch
       - redis:redis
+      - ostorage-srv:ostorage
     environment:
       NODE_ENV: $NODE_ENV
 

@@ -11,7 +11,7 @@ volumes:
 services:
   kafka:
     container_name: kafka
-    image: apache/kafka:4.0.1
+    image: apache/kafka:4.1.0
     restart: $RESTART
     hostname: kafka
     ports:

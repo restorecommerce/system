@@ -307,9 +307,6 @@ services:
     environment:
       ALLOW_HTTP: "true"
       API_TOKENS: "VBYmqRQxvXlmLyQc5jz5ASxVbYUqJMhM"
-    env_file:
-      - '.default.env'
-      - $ENV_FILE
 
   # fulfillment service
   fulfillment-srv:

@@ -14,25 +14,35 @@ Docker Compose.
 A complete system can be launched with:
 
 ```sh
-./all up
+./all.bash up -d
 ```
 
-...stopped with:
+where `-d` stands for detached mode.
+
+Stopped with:
 
 ```sh
-./all stop
+./all.bash stop
 ```
 
 ### Optional, the system can be lauched with a project prefix:
-```./all.bash -p [PROJECT_PREFIX] up -d```
 
-...stopped with:
-```./all.bash -p [PROJECT_PREFIX] stop```
+```sh
+./all.bash -p [PROJECT_PREFIX] up -d
+```
+
+where `-d` stands for detached mode.
+
+Stopped with:
+
+```sh
+./all.bash -p [PROJECT_PREFIX] stop
+```
 
 To remove all containers (except volumes):
 
 ```sh
-./all rm
+./all.bash rm
 ```
 
 To remove **all** volumes (delete the data):
@@ -54,13 +64,15 @@ The backing services for a Restorecommerce system comprise:
 These can be launched with:
 
 ```sh
-./backing up
+./backing.bash up -d
 ```
 
-...stopped with:
+where `-d` stands for detached mode.
+
+Stopped with:
 
 ```sh
-./backing stop
+./backing.bash stop
 ```
 
 To remove backing containers (except volumes):
@@ -74,6 +86,40 @@ To remove **all** volumes (delete the data):
 ```sh
 docker volume prune
 ```
+
+## Configuration
+
+Create a file named `.env` in `system/docker/`.
+Copy the following section into your personal `.env` file and set your preferences and credentials for:
+
+```sh
+# General
+ENV_FILE='.env'
+RESTART=always #Enable or disable automatic restart of all services (always/no)
+
+# Service Config
+logger__console__level=silly #Overrides the log level of all services (silly/debug/verbose/warn/error/crit)
+redis__offsetStoreInterval=15000
+
+# Fulfillment Service
+defaults__Couriers__DHLRest__configuration__value__ordering__username='user-valid' #For sandbox
+defaults__Couriers__DHLRest__configuration__value__ordering__password='SandboxPasswort2023!' #For sandbox
+defaults__Couriers__DHLRest__configuration__value__ordering__client_id='' #Set your DHL account information here
+defaults__Couriers__DHLRest__configuration__value__ordering__client_secret='' #Set your DHL account information here
+defaults__Couriers__DHLRest__configuration__value__tracking__username='' #Set your DHL account information here
+defaults__Couriers__DHLRest__configuration__value__tracking__password='' #Set your DHL account information here
+defaults__Couriers__DHLRest__configuration__value__tracking__client_id='' #Set your DHL account information here
+defaults__Couriers__DHLRest__configuration__value__tracking__client_secret='' #Set your DHL account information here
+
+# Notification Service
+server__mailer__host='' #Set your mail server information here
+server__mailer__port='' #Set your mail server information here
+server__mailer__auth__user='' #Set your mail server information here
+server__mailer__auth__pass='' #Set your mail server information here
+server__mailer__tls__rejectUnauthorized='' #Set your mail server information here
+server__mailer__address='' #Set your mail server information here
+```
+
 
 ## Troubleshooting
 

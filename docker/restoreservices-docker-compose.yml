@@ -34,6 +34,9 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # Notification service
   notification-srv:
@@ -56,12 +59,9 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
-      server__mailer__host: $server__mailer__host
-      server__mailer__port: $server__mailer__port
-      server__mailer__auth__user: $server__mailer__auth__user
-      server__mailer__auth__pass: $server__mailer__auth__pass
-      server__mailer__tls__rejectUnauthorized: $server__mailer__tls__rejectUnauthorized
-      server__mailer__address: $server__mailer__address
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # Object storage service
   ostorage-srv:
@@ -86,6 +86,9 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # Object storage service
   ordering-srv:
@@ -110,6 +113,9 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # Object storage service
   catalog-srv:
@@ -134,6 +140,9 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # Resource service
   resource-srv:
@@ -158,6 +167,9 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # Facade service
   facade-srv:
@@ -196,6 +208,9 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # Scheduling service
   scheduling-srv:
@@ -219,6 +234,9 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # Rendering service
   rendering-srv:
@@ -243,6 +261,9 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # access control service
   access-control-srv:
@@ -267,6 +288,9 @@ services:
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # PDF rendering service
   pdf-rendering-srv:
@@ -283,6 +307,9 @@ services:
     environment:
       ALLOW_HTTP: "true"
       API_TOKENS: "VBYmqRQxvXlmLyQc5jz5ASxVbYUqJMhM"
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # fulfillment service
   fulfillment-srv:
@@ -306,14 +333,10 @@ services:
       - redis:redis
     environment:
       NODE_ENV: $NODE_ENV
-      defaults__Couriers__DHLRest__configuration__value__ordering__username: $defaults__Couriers__DHLRest__configuration__value__ordering__username
-      defaults__Couriers__DHLRest__configuration__value__ordering__password: $defaults__Couriers__DHLRest__configuration__value__ordering__password
-      defaults__Couriers__DHLRest__configuration__value__ordering__client_id: $defaults__Couriers__DHLRest__configuration__value__ordering__client_id
-      defaults__Couriers__DHLRest__configuration__value__ordering__client_secret: $defaults__Couriers__DHLRest__configuration__value__ordering__client_secret
-      defaults__Couriers__DHLRest__configuration__value__tracking__username: $defaults__Couriers__DHLRest__configuration__value__tracking__username
-      defaults__Couriers__DHLRest__configuration__value__tracking__password: $defaults__Couriers__DHLRest__configuration__value__tracking__password
-      defaults__Couriers__DHLRest__configuration__value__tracking__client_id: $defaults__Couriers__DHLRest__configuration__value__tracking__client_id
-      defaults__Couriers__DHLRest__configuration__value__tracking__client_secret: $defaults__Couriers__DHLRest__configuration__value__tracking__client_secret
+      redis__offsetStoreInterval: 15000
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
   
   # invoicing-srv
   invoicing-srv:
@@ -338,6 +361,10 @@ services:
       - ostorage-srv:ostorage
     environment:
       NODE_ENV: $NODE_ENV
+      redis__offsetStoreInterval: 15000
+    env_file:
+      - '.default.env'
+      - $ENV_FILE
 
   # static content server / web console (currently not implemented for RC)
   # console:
@@ -367,3 +394,6 @@ services:
       - facade-srv:facade-srv
     environment:
       NODE_ENV: $NODE_ENV
+    env_file:
+      - '.default.env'
+      - $ENV_FILE

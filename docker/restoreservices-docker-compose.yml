@@ -381,16 +381,16 @@ services:
   #     test: "exit 0"
 
 # Data
-  data:
-    container_name: restorecommerce_data
-    hostname: data
-    image: ghcr.io/restorecommerce/data:latest
-    networks:
-      - restorecommerce
-    links:
-      - facade-srv:facade-srv
-    environment:
-      NODE_ENV: $NODE_ENV
-    env_file:
-      - '.default.env'
-      - $ENV_FILE
+  #data:
+  #  container_name: restorecommerce_data
+  #  hostname: data
+  #  image: ghcr.io/restorecommerce/data:latest
+  #  networks:
+  #    - restorecommerce
+  #  links:
+  #    - facade-srv:facade-srv
+  #  environment:
+  #    NODE_ENV: $NODE_ENV
+  #  env_file:
+  #    - '.default.env'
+  #    - $ENV_FILE

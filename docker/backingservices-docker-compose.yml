@@ -37,9 +37,21 @@ services:
       KAFKA_DELETE_TOPIC_ENABLE: 'true'
       KAFKA_LOG_RETENTION_HOURS: 168
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@127.0.0.1:9093
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - kafka_data:/var/lib/kafka/data
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 9090:8080
+    depends_on:
+      - kafka
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: Local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    restart: on-failure
   redis:
     container_name: redis
     hostname: redis

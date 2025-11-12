@@ -51,7 +51,7 @@ services:
       DYNAMIC_CONFIG_ENABLED: 'true'
       KAFKA_CLUSTERS_0_NAME: Local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-    restart: on-failure
+    restart: $RESTART
   redis:
     container_name: redis
     hostname: redis

@@ -47,6 +47,8 @@ services:
       - 9090:8080
     depends_on:
       - kafka
+    networks:
+      - restorecommerce
     environment:
       DYNAMIC_CONFIG_ENABLED: 'true'
       KAFKA_CLUSTERS_0_NAME: Local

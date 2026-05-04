@@ -1,5 +1,5 @@
 #!/bin/bash
 
-export RESTART='always'
+export RESTART=${RESTART:-always}
 source .env
-docker compose -f backingservices-docker-compose.yml $@
+docker compose -f restoreservices-docker-compose.yml --profile backing $@

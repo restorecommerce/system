@@ -2,6 +2,6 @@
 
 export ENV_FILE='.default.env'
 export NODE_ENV='production'
-export RESTART='always'
+export RESTART=${RESTART:-always}
 source .env
-docker compose -f backingservices-docker-compose.yml -f restoreservices-docker-compose.yml $@
+docker compose -f restoreservices-docker-compose.yml $@

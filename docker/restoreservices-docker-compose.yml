@@ -9,12 +9,191 @@ volumes:
   cloudserver_metadata:
   elasticsearch_data:
 services:
+  ####################
+  # Backing Services #
+  ####################
+  kafka:
+    container_name: kafka
+    image: apache/kafka:4.1.0
+    restart: ${RESTART:-always}
+    hostname: kafka
+    profiles:
+      - "" #all
+      - backing
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    deploy:
+      resources:
+        limits:
+          memory: 3072m
+    networks:
+      - restorecommerce
+    environment:
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENERS: CONTROLLER://:9093,CLIENT://:9092,EXTERNAL://:29092
+      KAFKA_ADVERTISED_LISTENERS: CLIENT://kafka:9092,EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: CLIENT
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_DELETE_TOPIC_ENABLE: 'true'
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@127.0.0.1:9093
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - kafka_data:/var/lib/kafka/data
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 9090:8080
+    depends_on:
+      - kafka
+    networks:
+      - restorecommerce
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_NAME: Local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backing
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis:8.2.2-alpine3.22
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backing
+    ports:
+      - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          memory: 1024m
+    volumes:
+      - redis_data:/data
+    networks:
+      - restorecommerce
+    healthcheck:
+      test: "redis-cli ping"
+  arangodb:
+    container_name: arangodb
+    hostname: arangodb
+    image: arangodb/arangodb:3.12.4
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backing
+    ports:
+      - "8529:8529"
+    deploy:
+      resources:
+        limits:
+          memory: 2048m
+    volumes:
+      - arangodb_data:/var/lib/arangodb3
+      - aragodb_apps_data:/var/lib/arangodb3-apps
+    networks:
+      - restorecommerce
+    environment:
+      ARANGO_NO_AUTH: 1
+    healthcheck:
+      test: "wget -O - arangodb:8529/_api/version | grep 3.12.4"
+    # command: arangod --database.auto-upgrade=true
+  cloudserver:
+    container_name: cloudserver
+    hostname: cloudserver
+    image: ghcr.io/scality/cloudserver:9.0.31
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backing
+    ports:
+      - "8000:8000"
+      - "9990:9990"
+      - "9991:9991"
+    networks:
+      - restorecommerce
+    environment:
+      REMOTE_MANAGEMENT_DISABLE: 1
+      CLOUDSERVER_ACCESS_KEY: accessKey1
+      CLOUDSERVER_SECRET_KEY: verySecretKey1
+      ENDPOINT: cloudserver
+    volumes:
+      - cloudserver_data:/usr/src/app/localData
+      - cloudserver_metadata:/usr/src/app/localMetadata
+  elasticsearch:
+    container_name: restorecommerce_elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.5
+    restart: ${RESTART:-always}
+    hostname: elasticsearch
+    profiles:
+      - "" #all
+      - backing
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    deploy:
+      resources:
+        limits:
+          memory: 4096m
+    networks:
+      - restorecommerce
+    environment:
+      - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - cluster.name=cluster
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms3g -Xmx3g"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: "if [[ $$(curl -fsSL 'http://localhost:9200/_cat/health?h=status' | sed -r 's/^[[:space:]]+|[[:space:]]+$$//g') != 'red' ]]; then exit 0; else exit 1; fi"
+  kibana:
+    container_name: restorecommerce_kibana
+    image: docker.elastic.co/kibana/kibana:9.1.5
+    restart: ${RESTART:-always}
+    hostname: kibana
+    profiles:
+      - "" #all
+      - backing
+    environment:
+      SERVER_NAME: localhost
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    deploy:
+      resources:
+        limits:
+          memory: 1024m
+    networks:
+      - restorecommerce
+    depends_on:
+      - elasticsearch
+    healthcheck:
+      test: "exit 0"
+
+  ####################
+  # Backend Services #
+  ####################
+
   # Identity service
   identity-srv:
     container_name: restorecommerce_identity_srv
     hostname: identity-srv
     image: ghcr.io/restorecommerce/identity-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -43,7 +222,10 @@ services:
     container_name: restorecommerce_notification_srv
     hostname: notification-srv
     image: ghcr.io/restorecommerce/notification-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -68,7 +250,10 @@ services:
     container_name: restorecommerce_ostorage_srv
     hostname: ostorage-srv
     image: ghcr.io/restorecommerce/ostorage-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -95,7 +280,10 @@ services:
     container_name: restorecommerce_ordering_srv
     hostname: ordering-srv
     image: ghcr.io/restorecommerce/ordering-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -122,7 +310,10 @@ services:
     container_name: restorecommerce_catalog_srv
     hostname: catalog-srv
     image: ghcr.io/restorecommerce/catalog-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -149,7 +340,10 @@ services:
     container_name: restorecommerce_resource_srv
     hostname: master-data-srv
     image: ghcr.io/restorecommerce/resource-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -176,7 +370,10 @@ services:
     container_name: restorecommerce_facade_srv
     hostname: facade-srv
     image: ghcr.io/restorecommerce/facade-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -217,7 +414,10 @@ services:
     container_name: restorecommerce_scheduling_srv
     hostname: scheduling-srv
     image: ghcr.io/restorecommerce/scheduling-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -243,7 +443,10 @@ services:
     container_name: restorecommerce_rendering_srv
     hostname: rendering-srv
     image: ghcr.io/restorecommerce/rendering-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -270,7 +473,10 @@ services:
     container_name: restorecommerce_access_control_srv
     hostname: access-control-srv
     image: ghcr.io/restorecommerce/access-control-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -299,7 +505,10 @@ services:
     networks:
       - restorecommerce
     image: ghcr.io/restorecommerce/pdf-rendering-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     # links:
     #   - console:restorecommerce-console
     ports:
@@ -313,7 +522,10 @@ services:
     container_name: restorecommerce_fulfillment_srv
     hostname: fulfillment-srv
     image: ghcr.io/restorecommerce/fulfillment-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -328,6 +540,7 @@ services:
       - kafka:kafka
       - elasticsearch:elasticsearch
       - redis:redis
+      - ostorage-srv:ostorage
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
@@ -340,7 +553,10 @@ services:
     container_name: restorecommerce_invoicing_srv
     hostname: invoicing-srv
     image: ghcr.io/restorecommerce/invoicing-srv:latest
-    restart: $RESTART
+    restart: ${RESTART:-always}
+    profiles:
+      - "" #all
+      - backend
     networks:
       - restorecommerce
     ports:
@@ -363,11 +579,18 @@ services:
       - '.default.env'
       - $ENV_FILE
 
-  # static content server / web console (currently not implemented for RC)
+  #####################
+  # Frondend Services #
+  #####################
+
+  ## static content server / web console (currently not implemented for RC)
   # console:
   #   hostname: restorecommerce-console
   #   container_name: restorecommerce_nginx
   #   image: nginx:latest
+  #   profiles:
+  #    - "" #all
+  #    - frontend
   #   ports:
   #     - "80:8080"
   #   environment:
@@ -380,11 +603,13 @@ services:
   #   healthcheck:
   #     test: "exit 0"
 
-# Data
-  #data:
+  # data:
   #  container_name: restorecommerce_data
   #  hostname: data
   #  image: ghcr.io/restorecommerce/data:latest
+  #  profiles:
+  #    - "" #all
+  #    - dataset
   #  networks:
   #    - restorecommerce
   #  links:

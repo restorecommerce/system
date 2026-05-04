@@ -78,13 +78,29 @@ Stopped with:
 To remove backing containers (except volumes):
 
 ```sh
-./backing rm
+./backing.bash rm
 ```
 
 To remove **all** volumes (delete the data):
 
 ```sh
 docker volume prune
+```
+
+
+## Docker Profiles
+
+This docker compose project now supports [profiles](https://docs.docker.com/compose/how-tos/profiles/).
+Use profiles to control which group of services to address.
+
+Examples:
+
+```sh
+./all.bash up -d                                     # start all
+./all.bash --profile backing up -d                   # starts backing services only
+./all.bash --profile backing --profile backend up -d # starts backing + backend
+./all.bash --profile backend stop                    # stops backend only
+./all.bash stop                                      # stops all
 ```
 
 ## Configuration

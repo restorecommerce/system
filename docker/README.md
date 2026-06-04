@@ -59,7 +59,7 @@ The backing services for a Restorecommerce system comprise:
 - [Redis](https://redis.io/)
 - [ArangoDB](https://www.arangodb.com/)
 - [Elasticsearch/ Kibana](https://www.elastic.co/)
-- [Cloudserver](https://www.zenko.io/cloudserver/)
+- [RustFS](https://rustfs.dev/)
 
 These can be launched with:
 

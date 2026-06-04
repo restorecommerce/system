@@ -5,8 +5,7 @@ volumes:
   redis_data:
   arangodb_data:
   aragodb_apps_data:
-  cloudserver_data:
-  cloudserver_metadata:
+  rustfs_data:
   elasticsearch_data:
 services:
   ####################
@@ -14,7 +13,7 @@ services:
   ####################
   kafka:
     container_name: kafka
-    image: apache/kafka:4.1.0
+    image: apache/kafka:4.3.0
     restart: ${RESTART:-always}
     hostname: kafka
     profiles:
@@ -107,31 +106,28 @@ services:
     healthcheck:
       test: "wget -O - arangodb:8529/_api/version | grep 3.12.4"
     # command: arangod --database.auto-upgrade=true
-  cloudserver:
-    container_name: cloudserver
-    hostname: cloudserver
-    image: ghcr.io/scality/cloudserver:9.0.31
+  rustfs:
+    container_name: rustfs
+    hostname: rustfs
+    image: rustfs/rustfs:1.0.0-beta.6-glibc
     restart: ${RESTART:-always}
     profiles:
       - "" #all
       - backing
     ports:
-      - "8000:8000"
-      - "9990:9990"
-      - "9991:9991"
+      - "9000:9000"
+      - "9001:9001"
     networks:
       - restorecommerce
     environment:
-      REMOTE_MANAGEMENT_DISABLE: 1
-      CLOUDSERVER_ACCESS_KEY: accessKey1
-      CLOUDSERVER_SECRET_KEY: verySecretKey1
-      ENDPOINT: cloudserver
+      RUSTFS_ACCESS_KEY: accessKey1
+      RUSTFS_SECRET_KEY: verySecretKey1
+      ENDPOINT: rustfs
     volumes:
-      - cloudserver_data:/usr/src/app/localData
-      - cloudserver_metadata:/usr/src/app/localMetadata
+      - arangodb_data:/data:/data
   elasticsearch:
     container_name: restorecommerce_elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.5
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.4.2
     restart: ${RESTART:-always}
     hostname: elasticsearch
     profiles:
@@ -159,7 +155,7 @@ services:
       test: "if [[ $$(curl -fsSL 'http://localhost:9200/_cat/health?h=status' | sed -r 's/^[[:space:]]+|[[:space:]]+$$//g') != 'red' ]]; then exit 0; else exit 1; fi"
   kibana:
     container_name: restorecommerce_kibana
-    image: docker.elastic.co/kibana/kibana:9.1.5
+    image: docker.elastic.co/kibana/kibana:9.4.2
     restart: ${RESTART:-always}
     hostname: kibana
     profiles:
@@ -259,12 +255,12 @@ services:
     ports:
       - "50066:50051"
     depends_on:
-      - cloudserver
+      - rustfs
       - kafka
       - elasticsearch
       - redis
     links:
-      - cloudserver:cloudserver
+      - rustfs:rustfs
       - kafka:kafka
       - elasticsearch:elasticsearch
       - redis:redis

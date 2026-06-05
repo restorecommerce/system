@@ -65,7 +65,7 @@ services:
   redis:
     container_name: redis
     hostname: redis
-    image: redis:8.2.2-alpine3.22
+    image: redis:8.6.4-alpine3.23
     restart: ${RESTART:-always}
     profiles:
       - "" #all
@@ -124,7 +124,7 @@ services:
       RUSTFS_SECRET_KEY: verySecretKey1
       ENDPOINT: rustfs
     volumes:
-      - arangodb_data:/data:/data
+      - rustfs_data:/data
   elasticsearch:
     container_name: restorecommerce_elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:9.4.2

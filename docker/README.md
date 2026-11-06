@@ -56,7 +56,7 @@ docker volume prune
 The backing services for a Restorecommerce system comprise:
 
 - [Apache Kafka](https://kafka.apache.org/)
-- [Redis](https://redis.io/)
+- [Valkey](https://valkey.io/)
 - [ArangoDB](https://www.arangodb.com/)
 - [Elasticsearch/ Kibana](https://www.elastic.co/)
 - [RustFS](https://rustfs.dev/)

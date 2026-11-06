@@ -2,7 +2,7 @@ networks:
   restorecommerce:
 volumes:
   kafka_data:
-  redis_data:
+  valkey_data:
   arangodb_data:
   aragodb_apps_data:
   rustfs_data:
@@ -62,10 +62,10 @@ services:
     profiles:
       - "" #all
       - backing
-  redis:
-    container_name: redis
-    hostname: redis
-    image: redis:8.10.2-alpine3.23
+  valkey:
+    container_name: valkey
+    hostname: valkey
+    image: valkey/valkey:8.0-alpine
     restart: ${RESTART:-always}
     profiles:
       - "" #all
@@ -77,11 +77,13 @@ services:
         limits:
           memory: 1024m
     volumes:
-      - redis_data:/data
+      - valkey_data:/data
     networks:
-      - restorecommerce
+      restorecommerce:
+        aliases:
+          - redis
     healthcheck:
-      test: "redis-cli ping"
+      test: "valkey-cli ping"
   arangodb:
     container_name: arangodb
     hostname: arangodb
@@ -199,13 +201,14 @@ services:
       - kafka
       # - console
       - elasticsearch
-      - redis
+      - valkey
     links:
       - arangodb:arangodb
       - kafka:kafka
       # - console:restorecommerce-console
       - elasticsearch:elasticsearch
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
@@ -229,11 +232,12 @@ services:
     depends_on:
       - kafka
       - elasticsearch
-      - redis
+      - valkey
     links:
       - kafka:kafka
       - elasticsearch:elasticsearch
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
@@ -258,12 +262,13 @@ services:
       - rustfs
       - kafka
       - elasticsearch
-      - redis
+      - valkey
     links:
       - rustfs:rustfs
       - kafka:kafka
       - elasticsearch:elasticsearch
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
@@ -288,12 +293,13 @@ services:
       - arangodb
       - kafka
       - elasticsearch
-      - redis
+      - valkey
     links:
       - arangodb:arangodb
       - kafka:kafka
       - elasticsearch:elasticsearch
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
@@ -318,12 +324,13 @@ services:
       - arangodb
       - kafka
       - elasticsearch
-      - redis
+      - valkey
     links:
       - arangodb:arangodb
       - kafka:kafka
       - elasticsearch:elasticsearch
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
@@ -348,11 +355,12 @@ services:
       - arangodb
       - kafka
       - elasticsearch
-      - redis
+      - valkey
     links:
       - kafka:kafka
       - arangodb:arangodb
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
       - elasticsearch:elasticsearch
     environment:
       NODE_ENV: $NODE_ENV
@@ -379,7 +387,7 @@ services:
       - resource-srv
       - notification-srv
       - rendering-srv
-      - redis
+      - valkey
       - access-control-srv
       - kafka
       - elasticsearch
@@ -389,7 +397,8 @@ services:
       - kafka:kafka
       - notification-srv:notification-srv
       - resource-srv:master-data-srv
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
       - rendering-srv:rendering-srv
       - access-control-srv:access-control-srv
       - scheduling-srv:scheduling-srv
@@ -420,13 +429,14 @@ services:
       - "50054:50051"
       - "3000:3000"
     depends_on:
-      - redis
+      - valkey
       - kafka
       - elasticsearch
     links:
       - elasticsearch:elasticsearch
       - kafka:kafka
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
@@ -450,13 +460,14 @@ services:
     depends_on:
       - kafka
       - elasticsearch
-      - redis
+      - valkey
       # - console
     links:
       - kafka:kafka
       # - console:restorecommerce-console
       - elasticsearch:elasticsearch
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
@@ -481,12 +492,13 @@ services:
       - arangodb
       - kafka
       - elasticsearch
-      - redis
+      - valkey
     links:
       - arangodb:arangodb
       - kafka:kafka
       - elasticsearch:elasticsearch
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
     environment:
       NODE_ENV: $NODE_ENV
       redis__offsetStoreInterval: 15000
@@ -530,12 +542,13 @@ services:
       - arangodb
       - kafka
       - elasticsearch
-      - redis
+      - valkey
     links:
       - arangodb:arangodb
       - kafka:kafka
       - elasticsearch:elasticsearch
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
       - ostorage-srv:ostorage
     environment:
       NODE_ENV: $NODE_ENV
@@ -561,12 +574,13 @@ services:
       - arangodb
       - kafka
       - elasticsearch
-      - redis
+      - valkey
     links:
       - arangodb:arangodb
       - kafka:kafka
       - elasticsearch:elasticsearch
-      - redis:redis
+      - valkey:valkey
+      - valkey:redis
       - ostorage-srv:ostorage
     environment:
       NODE_ENV: $NODE_ENV
